@@ -1,0 +1,360 @@
+{
+    "productos":[
+        {
+            "id": 1,
+            "nombre": "Bolso cosmestiquera",
+            "precio": 6,
+            "categoria": "Bolso",
+            "imagen": "src/assets/Bolso cosmetiquera.jpeg"
+        },
+        {
+            "id": 2,
+            "nombre": "Polvo Compacto Vegano DB",
+            "precio": 8,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo Compacto Vegano DB.jpeg"
+        },
+        {
+            "id": 3,
+            "nombre": "Polvo Compacto DB",
+            "precio": 5.4,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo  Compacto DB.jpeg"
+        },
+        {
+            "id": 4,
+            "nombre": "Brocha de Productos liquidos",
+            "precio": 4,
+            "categoria": "Brocha",
+            "imagen": "src/assets/Brocha de Productos liquidos.jpeg"
+        },
+        {
+            "id": 5,
+            "nombre": "Polvo compacto DB",
+            "precio": 3.5,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo Compacto DB.jpg"
+        },
+        {
+            "id": 6,
+            "nombre": "Labial red velevet trendy",
+            "precio": 5.4,
+            "categoria": "Labial",
+            "imagen": "src/assets/Labial red Velvet trendy.jpeg"
+        },
+        {
+            "id": 7,
+            "nombre": "Labial en barra matte DB",
+            "precio": 2.7,
+            "categoria": "Labial",
+            "imagen": "src/assets/Labial en barra matte DB.jpeg"
+        },
+        {
+            "id": 8,
+            "nombre": "Labial Cherry color trendy",
+            "precio": 5.5,
+            "categoria": "Labial",
+            "imagen": "src/assets/Labial Cherry color trendy.jpeg"
+        },
+        {
+            "id": 9,
+            "nombre": "Tonico de rosas y manzanilla trendy",
+            "precio": 9,
+            "categoria": "Tonico",
+            "imagen": "src/assets/Tonico de rosa y Manzanilla trendy.jpeg"
+        },
+        {
+            "id": 10,
+            "nombre": "Brillo engol",
+            "precio": 0,
+            "categoria": "Brillo",
+            "imagen": "src/assets/Brillo engol.jpeg"
+        },
+        {
+            "id": 11,
+            "nombre": "Lapiz de cejas ushas",
+            "precio": 3.33,
+            "categoria": "Lapiz",
+            "imagen": "src/assets/Lapiz de cejas ushas.jpeg"
+        },
+        {
+            "id": 12,
+            "nombre": "Gloss italia deluxe",
+            "precio": 4.99,
+            "categoria": "Gloss",
+            "imagen": "src/assets/Gloss italia deluxe.jpeg"
+        },
+        {
+            "id": 13,
+            "nombre": "Borla Triangular",
+            "precio": 1.2,
+            "categoria": "Pomo",
+            "imagen": "src/assets/Borla Triangular.jpeg"
+        },
+        {
+            "id": 14,
+            "nombre": "Got2b",
+            "precio": 8,
+            "categoria": "Base",
+            "imagen": "src/assets/Got2b.jpeg"
+        },
+        {
+            "id": 15,
+            "nombre": "Lapiz de cejas retractil super delgado solomé",
+            "precio": 6,
+            "categoria": "Lapiz",
+            "imagen": "src/assets/Lapiz de cejas retractil super delgado Solome.jpeg"
+        },
+        {
+            "id": 16,
+            "nombre": "Rimer Salomé",
+            "precio": 5.3,
+            "categoria": "Rimer",
+            "imagen": "src/assets/Rimer Salomé.jpeg"
+        },
+        {
+            "id": 17,
+            "nombre": "Mascara de colágeno para ojos trendy",
+            "precio": 1.2,
+            "categoria": "Mascara",
+            "imagen": "src/assets/Mascara de colágeno para ojos trendy.jpeg"
+        },
+        {
+            "id": 18,
+            "nombre": "Mascara de Colágeno para labios trendy",
+            "precio": 1.2,
+            "categoria": "Mascara",
+            "imagen": "src/assets/Macara de colageno para labios trendy.jpeg"
+        },
+        {
+            "id": 19,
+            "nombre": "Brillo magico de oro trendy",
+            "precio": 5,
+            "categoria": "Brillo",
+            "imagen": "src/assets/Brillo magico de oro trendy.jpeg"
+        },
+        {
+            "id": 20,
+            "nombre": "Brillo liquido cherry trendy",
+            "precio": 5.5,
+            "categoria": "Brillo",
+            "imagen": "src/assets/Brillo liquido cherry trendy.jpeg"
+        },
+        {
+            "id": 21,
+            "nombre": "Rubor en crema star trendy",
+            "precio": 5,
+            "categoria": "Rubor",
+            "imagen": "src/assets/Rumor en crema star trendy.jpeg"
+        },
+        {
+            "id": 22,
+            "nombre": "Rubor en polvo Salomé",
+            "precio": 6,
+            "categoria": "Rubor",
+            "imagen": "src/assets/Rubor en Polvo Salome.jpeg"
+        },
+        {
+            "id": 23,
+            "nombre": "Eclipse lunar rubor trendy",
+            "precio": 7,
+            "categoria": "Rubor",
+            "imagen": "src/assets/Eclipse lunar rubor trendy.jpeg"
+        },
+        {
+            "id": 24,
+            "nombre": "Polvo Compacto",
+            "precio": 7.5,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo Compacto.jpeg"
+        },
+        {
+            "id": 25,
+            "nombre": "Base semi matte aria cosmetics",
+            "precio": 10.5,
+            "categoria": "Base",
+            "imagen": "src/assets/Base semi matte aria cosmetics.jpeg"
+        },
+        {
+            "id": 26,
+            "nombre": "Tinta de labios",
+            "precio": 4.5,
+            "categoria": "Tinta",
+            "imagen": "src/assets/Tinta de labios.jpeg"
+        },
+        {
+            "id": 27,
+            "nombre": "Polvo suelto aria cosmetics",
+            "precio": 7.5,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo suelto aria cosmetics.jpeg"
+        },
+        {
+            "id": 28,
+            "nombre": "Corrector 4en1 aria cosmetics",
+            "precio": 6.5,
+            "categoria": "Corrector",
+            "imagen": "src/assets/Corrector 4en1 aria cosmetics.jpeg"
+        },
+        {
+            "id": 29,
+            "nombre": "Rubor en barra aria cosmetics",
+            "precio": 6.5,
+            "categoria": "Rubor",
+            "imagen": "src/assets/Rubor a barra aria cosmetics.jpeg"
+        },
+        {
+            "id": 30,
+            "nombre": "Delineador Punta fina",
+            "precio": 5.5,
+            "categoria": "Delineador",
+            "imagen": "src/assets/Delineador Punta fina.jpeg"
+        },
+        {
+            "id": 31,
+            "nombre": "Mascara de Pestañas efecto 3D",
+            "precio": 5,
+            "categoria": "Rimer",
+            "imagen": "src/assets/Mascara de Pestañas efecto 3D.jpeg"
+        },
+        {
+            "id": 32,
+            "nombre": "Brocha de base grande",
+            "precio": 5.5,
+            "categoria": "Brocha",
+            "imagen": "src/assets/Brocha de base grande.jpeg"
+        },
+        {
+            "id": 33,
+            "nombre": "Desmaquillador dual Ginkgi biloba",
+            "precio": 11,
+            "categoria": "Desmaquillador",
+            "imagen": "src/assets/Desmaquillador Dual ginkgo biloba.jpeg"
+        },
+        {
+            "id": 34,
+            "nombre": "Tollas húmedas Desmaquilladora dolce bella",
+            "precio": 8,
+            "categoria": "Desmaquillador",
+            "imagen": "src/assets/Toallas humedas desmaquilladora dolce bella.jpeg"
+        },
+        {
+            "id": 35,
+            "nombre": "Prime dolce bella",
+            "precio": 8,
+            "categoria": "Base",
+            "imagen": "src/assets/Pimer Dolce bella.jpeg"
+        },
+        {
+            "id": 36,
+            "nombre": "Mascara Big eyes",
+            "precio": 5,
+            "categoria": "Rimer",
+            "imagen": "src/assets/Mascara Big eyes.jpeg"
+        },
+        {
+            "id": 37,
+            "nombre": "Brillo de Labios Voluminoso",
+            "precio": 7.5,
+            "categoria": "Brillo",
+            "imagen": "src/assets/Brillo labios voluminoso Dolce bella.jpeg"
+        },
+        {
+            "id": 38,
+            "nombre": "Encrespado de pestañas",
+            "precio": 5,
+            "categoria": "Levantador de Pestañas",
+            "imagen": "src/assets/Encrespado de pestañas.jpeg"
+        },
+        {
+            "id": 39,
+            "nombre": "Pomo",
+            "precio": 2.5,
+            "categoria": "Pomo",
+            "imagen": "src/assets/Pomo.jpeg"
+        },
+        {
+            "id": 40,
+            "nombre": "Mascara de pestañas Dolce Bella",
+            "precio": 5,
+            "categoria": "Rimer",
+            "imagen": "src/assets/Mascara de Pestañas dulce bella.jpeg"
+        },
+        {
+            "id": 41,
+            "nombre": "Mascara false Lash",
+            "precio": 5,
+            "categoria": "Rimer",
+            "imagen": "src/assets/Mascara false Lash.jpeg"
+        },
+        {
+            "id": 42,
+            "nombre": "Base velvet",
+            "precio": 6.5,
+            "categoria": "Base",
+            "imagen": "src/assets/Base velvet.jpeg"
+        },
+        {
+            "id": 43,
+            "nombre": "Contorno en barra Dolce bella",
+            "precio": 5.5,
+            "categoria": "Corrector",
+            "imagen": "src/assets/Contotrno en barra Dolce bella.jpeg"
+        },
+        {
+            "id": 44,
+            "nombre": "Polvo diamante Dolce bella",
+            "precio": 8,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo diamante Dolce bella.jpeg"
+        },
+        {
+            "id": 45,
+            "nombre": "Face Primer Dolce bella",
+            "precio": 10.5,
+            "categoria": "Hidratante",
+            "imagen": "src/assets/Face primer Dolce bella.jpeg"
+        },
+        {
+            "id": 46,
+            "nombre": "Paleta de sombra 56 tonos Dolce bella",
+            "precio": 26,
+            "categoria": "Sombras",
+            "imagen": "src/assets/Paleta de sambra de 56 tonos Dolce bella.jpeg"
+        },
+        {
+            "id": 47,
+            "nombre": "Polvo suelto Dolce bella",
+            "precio": 8.5,
+            "categoria": "Polvo",
+            "imagen": "src/assets/Polvo suelto Dolce bella.jpeg"
+        },
+        {
+            "id": 48,
+            "nombre": "Base matte Dolce bella",
+            "precio": 7,
+            "categoria": "Base",
+            "imagen": "src/assets/Base matte Dolce bella.jpeg"
+        },
+        {
+            "id": 49,
+            "nombre": "Corrector Líquido Dolce bella",
+            "precio": 5.5,
+            "categoria": "Corrector",
+            "imagen": "src/assets/Corrector liquido Dolce bella.jpeg"
+        },
+        {
+            "id": 50,
+            "nombre": "Rubor en barra Dolce bella",
+            "precio": 0,
+            "categoria": "Rubor",
+            "imagen": "src/assets/Contorno en barra Dolce bella.jpeg"
+        }
+
+
+
+        
+
+    ]
+
+}
