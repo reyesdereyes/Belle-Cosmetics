@@ -19,21 +19,21 @@ const Carousel = () => {
         <div className="carousel-inner">
           <div className="carousel-item active">
             <img
-              src="src/assets/Bolso cosmetiquera.jpeg" // cambia la ruta según tu estructura
+              src="./assets/Bolso cosmetiquera.jpeg" // cambia la ruta según tu estructura
               className="d-block w-100 h-100 object-fit-cover"
               alt="Producto 1"
             />
           </div>
           <div className="carousel-item">
             <img
-              src="src/assets/Brocha de Productos Liquidos.jpeg"
+              src="./assets/Brocha de Productos Liquidos.jpeg"
               className="d-block w-100 h-100 object-fit-cover"
               alt="Producto 2"
             />
           </div>
           <div className="carousel-item">
             <img
-              src="src/assets/Polvo  Compacto DB.jpeg"
+              src="./assets/Polvo  Compacto DB.jpeg"
               className="d-block w-100 h-100 object-fit-cover"
               alt="Producto 3"
             />
