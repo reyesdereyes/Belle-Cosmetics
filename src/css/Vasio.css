@@ -1,0 +1,75 @@
+.empty-cart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff; /* Fondo blanco */
+  }
+  
+  .empty-cart-content {
+    text-align: center;
+    padding: 40px 30px; /* Más espacio interno */
+    border-radius: 15px; /* Bordes redondeados */
+    background: linear-gradient(145deg, #ffffff, #ffffff); /* Degradado sutil */
+    animation: fadeIn 0.6s ease-in-out; /* Animación de entrada */
+  }
+  
+  .shopping-cart-icon {
+    margin-bottom: 30px;
+  }
+  
+  .cart-image {
+    width: 120px; /* Tamaño más grande */
+    height: 120px;
+    border-radius: 50%; /* Imagen en círculo */
+    object-fit: cover;
+    background-color: #e0e0e0; /* Fondo gris claro */
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más profunda */
+    border: 2px solid #ffffff; /* Borde blanco */
+    transition: transform 0.3s ease; /* Efecto hover */
+  }
+  
+  .cart-image:hover {
+    transform: scale(1.1); /* Zoom al pasar el mouse */
+  }
+  
+  h2 {
+    font-size: 2rem; /* Título más grande */
+    font-weight: 600; /* Negrita moderada */
+    color: #333333; /* Color oscuro para mejor contraste */
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 1.1rem; /* Texto más legible */
+    color: #666666; /* Gris suave */
+    margin-bottom: 30px;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(90deg, #ee97ff, #f6a3ff); /* Degradado llamativo */
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 12px 25px; /* Más espacio interno */
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff; /* Texto blanco */
+    transition: transform 0.3s ease, background 0.3s ease; /* Animación */
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px); /* Elevación al pasar el mouse */
+    background: linear-gradient(90deg, #e9a1ff, #ffb1f3); /* Cambio de degradado */
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
