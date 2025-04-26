@@ -8,7 +8,7 @@ const EmptyCart = () => {
             <div className="empty-cart-content">
                 <div className="shopping-cart-icon">
                     <img
-                        src="public/Carrito de compra.jpg" 
+                        src="/Carrito de compra.jpg" 
                         alt="Carrito vacío"
                         className="cart-image"
                     />
