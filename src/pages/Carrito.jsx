@@ -12,7 +12,7 @@ const Carrito = () => {
                   <div className="logo-section ">
                       <img
                           className="header-owner-data-picture"
-                          src="public/LOGO ROSA CON BLANCO TRANSPARENTE.png"
+                          src="./LOGO ROSA CON BLANCO TRANSPARENTE.png"
                           alt="Logo"
                       />
                       <span className="navbar-text ms-2">Belle Cosmetics</span>
