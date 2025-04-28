@@ -12,7 +12,7 @@
             "nombre": "Polvo Compacto Vegano DB",
             "precio": 8,
             "categoria": "Polvo",
-            "imagen": "./assets/Polvo Compacto Vegano DB.jpeg"
+            "imagen": "./assets/Polvo Compacto vegano DB.jpeg"
         },
         {
             "id": 3,
@@ -26,7 +26,7 @@
             "nombre": "Brocha de Productos liquidos",
             "precio": 4,
             "categoria": "Brocha",
-            "imagen": "./assets/Brocha de Productos liquidos.jpeg"
+            "imagen": "./assets/Brocha de Productos Liquidos.jpeg"
         },
         {
             "id": 5,
@@ -54,7 +54,7 @@
             "nombre": "Labial Cherry color trendy",
             "precio": 5.5,
             "categoria": "Labial",
-            "imagen": "./assets/Labial Cherry color trendy.jpeg"
+            "imagen": "./assets/Labial Cherry Color trendy.jpeg"
         },
         {
             "id": 9,
@@ -89,7 +89,7 @@
             "nombre": "Borla Triangular",
             "precio": 1.2,
             "categoria": "Pomo",
-            "imagen": "./assets/Borla Triangular.jpeg"
+            "imagen": "./assets/Borla triangular.jpeg"
         },
         {
             "id": 14,
@@ -159,7 +159,7 @@
             "nombre": "Eclipse lunar rubor trendy",
             "precio": 7,
             "categoria": "Rubor",
-            "imagen": "./assets/Eclipse lunar rubor trendy.jpeg"
+            "imagen": "./assets/Eclipse Lunar Rubor Trendy.jpeg"
         },
         {
             "id": 24,
@@ -180,7 +180,7 @@
             "nombre": "Tinta de labios",
             "precio": 4.5,
             "categoria": "Tinta",
-            "imagen": "./assets/Tinta de labios.jpeg"
+            "imagen": "./assets/Tinta de Labios.jpeg"
         },
         {
             "id": 27,
@@ -208,7 +208,7 @@
             "nombre": "Delineador Punta fina",
             "precio": 5.5,
             "categoria": "Delineador",
-            "imagen": "./assets/Delineador Punta fina.jpeg"
+            "imagen": "./assets/Delineador punta fina.jpeg"
         },
         {
             "id": 31,
@@ -285,7 +285,7 @@
             "nombre": "Mascara false Lash",
             "precio": 5,
             "categoria": "Rimer",
-            "imagen": "./assets/Mascara false Lash.jpeg"
+            "imagen": "./assets/Mascara false lash.jpeg"
         },
         {
             "id": 42,
