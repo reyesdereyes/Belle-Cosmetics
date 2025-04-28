@@ -8,18 +8,17 @@ import Vasio from './pages/Vasio';
 
 function App() {
   return (
-    <CartProvider>
-      <Router basename="/Belle-Cosmetics">
+    <CartProvider> {/* Envolver la aplicación con CartProvider */}
+      <Router>
         <Routes>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/productos" element={<Productos />} />
+          <Route path="/" element={<Inicio />} /> {/* Ruta para Inicio */}
+          <Route path='/carrito' element={<Carrito />} /> {/* Ruta para Carrito */}
+          <Route path="/productos" element={<Productos />} /> {/* Ruta para Productos */}
           <Route path="/carrito-vacio" element={<Vasio />} />
         </Routes>
       </Router>
     </CartProvider>
   );
 }
-
 
 export default App;
