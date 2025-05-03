@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Importar React Router
+import { supabase } from './config/supabase'
 import Inicio from './pages/Inicio';
 import Productos from './pages/Productos'; // Importar la página Productos
 import { CartProvider } from './components/CartContext'; // Importar el CartProvider

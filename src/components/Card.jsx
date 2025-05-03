@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from './CartContext'; // Correcto si está en la misma carpeta
 import { FaTrash } from 'react-icons/fa'; // Importar el ícono de basura
-
+import { supabase } from './config/supabase'
 const Card = ({ nombre, precio, imagen }) => {
   const [cantidad, setCantidad] = useState(1);
   const [mostrarControles, setMostrarControles] = useState(false); // Estado para mostrar los botones de cantidad
