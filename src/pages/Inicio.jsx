@@ -35,7 +35,7 @@ const Inicio = () => {
       <div className="carousel-section">
         <div className="d-flex justify-content-center align-items-center">
           <img
-            src="./LOGO ROSA CON BLANCO TRANSPARENTE.png"
+            src="./Logo_2.png" 
             alt="Logo"
             style={{
               width: '700px', // Ajusta el ancho

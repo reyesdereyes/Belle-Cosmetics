@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarComponent } from './Sidebar';
-import logo from '/LOGO ROSA CON BLANCO TRANSPARENTE.png';
+
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from './CartContext'; // Importar el contexto del carrito
 import { Toast } from 'primereact/toast'; // Importar Toast de PrimeReact
@@ -29,7 +29,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="navbar-brand d-flex align-items-center" style={{ gap: '10px' }}>
             <img
-              src={logo}
+              src="./Logo_2.png" 
               alt="Belle Cosmetics"
               style={{ height: '80px', objectFit: 'contain' }}
             />
