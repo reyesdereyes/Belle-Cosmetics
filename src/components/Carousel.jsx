@@ -1,8 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'; 
+import { supabase } from '../config/supabase';
 
 const Carousel = () => {
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    async function getProductos() {
+      const { data: productos, error } = await supabase.from('product').select();
+
+      if (error) {
+        console.error('Error al obtener productos:', error.message);
+        return;
+      }
+
+      console.log('Productos obtenidos:', productos);
+
+      if (productos && productos.length > 0) {
+        setProductos(productos);
+      }
+    }
+
+    getProductos();
+  }, []);
+
   return (
-    <div className="d-flex justify-content-center  vh-100 ">
+    <div className="d-flex justify-content-center vh-100">
       <div
         id="carouselExampleFade"
         className="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden"
@@ -13,31 +35,22 @@ const Carousel = () => {
           left: '10%',
           top: '2%',
           backgroundColor: '#fff',
-          border: '3px solidrgb(255, 255, 255)', // Color rosa moderno
+          border: '3px solid rgb(255, 255, 255)', // Color rosa moderno
         }}
       >
         <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img
-              src="./assets/Bolso cosmetiquera.jpeg" // cambia la ruta según tu estructura
-              className="d-block w-100 h-100 object-fit-cover"
-              alt="Producto 1"
-            />
-          </div>
-          <div className="carousel-item">
-            <img
-              src="./assets/Brocha de Productos Liquidos.jpeg"
-              className="d-block w-100 h-100 object-fit-cover"
-              alt="Producto 2"
-            />
-          </div>
-          <div className="carousel-item">
-            <img
-              src="./assets/Polvo  Compacto DB.jpeg"
-              className="d-block w-100 h-100 object-fit-cover"
-              alt="Producto 3"
-            />
-          </div>
+          {productos.slice(0, 4).map((p, index) => ( // Limita a las primeras 3 imágenes
+            <div
+              className={`carousel-item ${index === 0 ? 'active' : ''}`}
+              key={p.id}
+            >
+              <img
+                src={p.imagen || 'https://via.placeholder.com/700x600'}
+                className="d-block w-100 h-100 object-fit-cover"
+                alt={`Producto ${index + 1}`}
+              />
+            </div>
+          ))}
         </div>
         <button
           className="carousel-control-prev"
@@ -59,7 +72,7 @@ const Carousel = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Carousel
+export default Carousel;

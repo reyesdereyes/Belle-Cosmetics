@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Card from '../components/Card';
+import { supabase } from '../config/supabase'; // Importa la configuración de Supabase
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -8,16 +9,20 @@ const Productos = () => {
   const [busqueda, setBusqueda] = useState(''); // Estado para el término de búsqueda
 
   useEffect(() => {
-    fetch('src/data/productos.json') // Ruta al archivo JSON
-      .then((res) => res.json())
-      .then((data) => {
-        setProductos(data.productos); // Accede a la propiedad "productos" del JSON
+    async function fetchProductos() {
+      const { data: productos, error } = await supabase.from('product').select();
+
+      if (error) {
+        console.error('Error al cargar productos:', error.message);
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error al cargar productos:', error);
-        setLoading(false);
-      });
+        return;
+      }
+
+      setProductos(productos); // Establece los productos obtenidos desde Supabase
+      setLoading(false);
+    }
+
+    fetchProductos();
   }, []);
 
   // Filtrar productos según el término de búsqueda
@@ -70,12 +75,12 @@ const Productos = () => {
         ) : (
           <div className="row justify-content-center g-4">
             {productosFiltrados.length > 0 ? (
-              productosFiltrados.map((producto) => (
-                <div className="col-sm-6 col-md-4 col-lg-3" key={producto.id}>
+              productosFiltrados.map((p) => (
+                <div className="col-sm-6 col-md-4 col-lg-3" key={p.id}>
                   <Card
-                    nombre={producto.nombre}
-                    precio={producto.precio}
-                    imagen={producto.imagen || 'https://via.placeholder.com/150'}
+                    nombre={p.nombre}
+                    precio={p.precio}
+                    imagen={p.imagen || 'https://via.placeholder.com/150'}
                   />
                 </div>
               ))
@@ -87,6 +92,9 @@ const Productos = () => {
           </div>
         )}
       </div>
+      <br />
+      <br />
+      <br />
     </>
   );
 };

@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Agrega useState y useEffect
 import Header from '../components/Header';
 import Carousel from '../components/Carousel';
 import Card from '../components/Card';
-import productosData from '../data/productos.json'; // Importar los datos de productos
+import { supabase } from '../config/supabase'
 
 const Inicio = () => {
-  // Seleccionar los primeros 15 productos
-  const productos = productosData.productos.slice(0, 15);
+  const [productos, setProductos] = useState([])
+
+  useEffect(() => {
+       async function getProductos() {
+         const { data: productos, error } = await supabase.from('product').select();
+   
+         if (error) {
+           console.error('Error al obtener productos:', error.message);
+           return;
+         }
+   
+         console.log('Productos obtenidos:', productos);
+   
+         if (productos && productos.length > 0) {
+           setProductos(productos);
+         }
+       }
+
+    getProductos();
+  }, []);
+  
 
   return (
     <>
@@ -34,18 +53,25 @@ const Inicio = () => {
       <div className="mt-5"> {/* Agrega margen superior para separar */}
         <div className="container">
           <div className="row justify-content-center g-4">
-            {productos.map((producto) => (
-              <div className="col-sm-6 col-md-4 col-lg-3" key={producto.id}>
+            {productos.slice(0, 9).map((p) => ( // Limita a los primeros 9 productos
+              <div className="col-sm-6 col-md-4 col-lg-3" key={p.id}>
                 <Card
-                  nombre={producto.nombre}
-                  precio={producto.precio}
-                  imagen={producto.imagen || 'https://via.placeholder.com/150'}
+                  nombre={p.nombre}
+                  precio={p.precio}
+                  imagen={p.imagen || 'https://via.placeholder.com/150'}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 };

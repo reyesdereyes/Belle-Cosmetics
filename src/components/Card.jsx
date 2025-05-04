@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext'; // Correcto si está en la misma carpeta
 import { FaTrash } from 'react-icons/fa'; // Importar el ícono de basura
-import { supabase } from './config/supabase'
+import { supabase } from '../config/supabase'
+
 const Card = ({ nombre, precio, imagen }) => {
   const [cantidad, setCantidad] = useState(1);
   const [mostrarControles, setMostrarControles] = useState(false); // Estado para mostrar los botones de cantidad
   const { cart, dispatch } = useCart(); // Obtener el estado y el dispatch del carrito
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    async function getProductos() {
+      const { data: productos, error } = await supabase.from('product').select();
+
+      if (error) {
+        console.error('Error al obtener productos:', error.message);
+        return;
+      }
+
+      console.log('Productos obtenidos:', productos);
+
+      if (productos && productos.length > 0) {
+        setProductos(productos);
+      }
+    }
+
+    getProductos();
+  }, []);
 
   const handleAgregarAlCarrito = () => {
     dispatch({
@@ -47,95 +68,95 @@ const Card = ({ nombre, precio, imagen }) => {
 
         {/* Mostrar botones de cantidad solo si se agregó al carrito */}
         {mostrarControles ? (
-  <div className="d-flex flex-column align-items-center mb-3">
-    <div className="d-flex align-items-center">
-      {/* Botón de Decremento */}
-      {cantidad > 1 && (
-        <button
-          className="btn"
-          onClick={handleDecrementarCantidad}
-          style={{
-            borderRadius: '50%',
-            width: '40px',
-            height: '40px',
-            backgroundColor: '#f8f9fa', // Fondo claro
-            border: '1px solid #ced4da', // Borde gris claro
-            color: '#343a40', // Texto oscuro
-            fontSize: '1.2rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s ease', // Animación suave
-          }}
-        >
-          -
-        </button>
-      )}
+          <div className="d-flex flex-column align-items-center mb-3">
+            <div className="d-flex align-items-center">
+              {/* Botón de Decremento */}
+              {cantidad > 1 && (
+                <button
+                  className="btn"
+                  onClick={handleDecrementarCantidad}
+                  style={{
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    backgroundColor: '#f8f9fa', // Fondo claro
+                    border: '1px solid #ced4da', // Borde gris claro
+                    color: '#343a40', // Texto oscuro
+                    fontSize: '1.2rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease', // Animación suave
+                  }}
+                >
+                  -
+                </button>
+              )}
 
-      {/* Cantidad */}
-      <span
-        className="mx-3"
-        style={{
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          color: '#343a40', // Color del texto
-        }}
-      >
-        {cantidad}
-      </span>
+              {/* Cantidad */}
+              <span
+                className="mx-3"
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  color: '#343a40', // Color del texto
+                }}
+              >
+                {cantidad}
+              </span>
 
-      {/* Botón de Incremento */}
-      <button
-        className="btn"
-        onClick={handleIncrementarCantidad}
-        style={{
-          borderRadius: '50%',
-          width: '40px',
-          height: '40px',
-          backgroundColor: '#f1bcd2', // Rosa oscuro
-          color: '#fff', // Texto blanco
-          fontSize: '1.2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          border: 'none',
-          transition: 'background-color 0.3s ease', // Animación suave
-        }}
-      >
-        +
-      </button>
-    </div>
+              {/* Botón de Incremento */}
+              <button
+                className="btn"
+                onClick={handleIncrementarCantidad}
+                style={{
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  backgroundColor: '#f1bcd2', // Rosa oscuro
+                  color: '#fff', // Texto blanco
+                  fontSize: '1.2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  border: 'none',
+                  transition: 'background-color 0.3s ease', // Animación suave
+                }}
+              >
+                +
+              </button>
+            </div>
 
-    {/* Ícono de basura para eliminar el producto */}
-    {cantidad === 1 && (
-      <div
-        className="d-flex justify-content-center align-items-center mt-3"
-        style={{
-          cursor: 'pointer',
-        }}
-        onClick={handleVaciarCarrito}
-      >
-        <FaTrash
-          style={{
-            fontSize: '1.5rem',
-            color: '#FFFFFF', // Color rosa oscuro
-          }}
-        />
-      </div>
-    )}
-  </div>
-) : (
-  // Botón para agregar al carrito
-  <button
-    className="btn btn-primary w-100"
-    onClick={handleAgregarAlCarrito}
-    style={{ fontSize: '1rem', fontWeight: 'bold' }}
-  >
-    Agregar al carrito
-  </button>
-)}
+            {/* Ícono de basura para eliminar el producto */}
+            {cantidad === 1 && (
+              <div
+                className="d-flex justify-content-center align-items-center mt-3"
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={handleVaciarCarrito}
+              >
+                <FaTrash
+                  style={{
+                    fontSize: '1.5rem',
+                    color: '#FFFFFF', // Color rosa oscuro
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          // Botón para agregar al carrito
+          <button
+            className="btn btn-primary w-100"
+            onClick={handleAgregarAlCarrito}
+            style={{ fontSize: '1rem', fontWeight: 'bold' }}
+          >
+            Agregar al carrito
+          </button>
+        )}
       </div>
     </div>
   );
