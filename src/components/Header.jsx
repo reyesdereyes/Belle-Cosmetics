@@ -1,132 +1,210 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarComponent } from './Sidebar';
-
 import { FaShoppingCart } from 'react-icons/fa';
-import { useCart } from './CartContext'; // Importar el contexto del carrito
-import { Toast } from 'primereact/toast'; // Importar Toast de PrimeReact
+import { useCart } from './CartContext';
+import { Toast } from 'primereact/toast';
 
 const Header = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const { cart } = useCart(); // Obtener el estado del carrito
+  const { cart } = useCart();
   const totalItems = cart.items.reduce((total, item) => total + item.cantidad, 0);
-  const toast = useRef(null); // Referencia para el Toast
+  const toast = useRef(null);
 
   const showEmptyCartMessage = () => {
     toast.current.show({
       severity: 'warn',
       summary: 'Carrito vacío',
       detail: 'No tienes ningún producto agregado en el carrito.',
-      life: 3000, // Duración en milisegundos
+      life: 3000,
     });
   };
 
   return (
     <>
-      <Toast ref={toast} /> {/* Componente Toast para mostrar mensajes */}
-      <nav className="navbar navbar-expand-lg" style={{ backgroundColor: 'Transparent', padding: '10px 20px' }}>
-        <div className="container d-flex justify-content-between align-items-center">
-          {/* Logo */}
+      <Toast ref={toast} />
+      <nav
+        className="navbar navbar-expand-lg"
+        style={{
+          background: 'tranparet', // Fondo rosado pastel
+          padding: '10px 30px',
+          minHeight: '80px',
+        }}
+      >
+        <div className="container-fluid">
+          {/* Logo y nombre */}
           <Link to="/" className="navbar-brand d-flex align-items-center" style={{ gap: '10px' }}>
             <img
-              src="./Logo_2.png" 
+              src="./Logo_2.png"
               alt="Belle Cosmetics"
-              style={{ height: '80px', objectFit: 'contain' }}
+              style={{ height: '60px', objectFit: 'contain' }}
             />
-            <span className="text-white fw-bold" style={{ fontSize: '1.5rem', textDecoration: 'none' }}>
+            <span className="fw-bold" style={{ fontSize: '1.5rem', color: '#fff' }}>
               Belle Cosmetics
             </span>
           </Link>
 
-          {/* Menú de categorías y otros enlaces */}
-          <div className="d-flex justify-content-center align-items-center" style={{ gap: '30px' }}>
-            {/* Menú desplegable de categorías */}
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{ backgroundColor: 'transparent', border: 'none', color: 'white', fontWeight: 'bold' }}
-              >
-                Categorías
-              </button>
-              <div
-                className="dropdown-menu p-4"
-                aria-labelledby="dropdownMenuButton"
-                style={{
-                  width: '600px', // Ancho del mega menú
-                  backgroundColor: '#ffffff', // Fondo blanco
-                  border: '1px solid #e0e0e0', // Borde gris claro
-                  borderRadius: '10px',
-                }}
-              >
-                <div className="row">
-                  {/* Primera columna */}
-                  <div className="col-4">
-                    <h6 className="fw-bold">Categorias</h6>
-                    <ul className="list-unstyled">
-                      <li><Link className="dropdown-item" to="/categoria/labiales">Labiales</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/sombras">Sombras</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/bases">Bases</Link></li>
-                    </ul>
-                  </div>
-                  {/* Segunda columna */}
-                  <div className="col-4">
-                    <ul className="list-unstyled">
-                      <br />
-                      <li><Link className="dropdown-item" to="/categoria/cremas">Cremas</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/serums">Serums</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/limpiadores">Limpiadores</Link></li>
-                    </ul>
-                  </div>
-                  {/* Tercera columna */}
-                  <div className="col-4">
-                    <ul className="list-unstyled">
-                      <br />
-                      <li><Link className="dropdown-item" to="/categoria/perfumes-mujer">Para Mujer</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/perfumes-hombre">Para Hombre</Link></li>
-                      <li><Link className="dropdown-item" to="/categoria/perfumes-unisex">Unisex</Link></li>
-                    </ul>
+          {/* Botón hamburguesa para mobile */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            style={{ border: 'none' }}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="collapse navbar-collapse" id="navbarNav">
+            {/* Menú central */}
+            <ul className="navbar-nav mx-auto d-flex align-items-center" style={{ gap: '30px' }}>
+              <li className="nav-item dropdown">
+                <button
+                  className="btn btn-link nav-link dropdown-toggle fw-bold"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Categorías
+                </button>
+                <div
+                  className="dropdown-menu p-4"
+                  aria-labelledby="dropdownMenuButton"
+                  style={{
+                    width: '600px',
+                    backgroundColor: '#fff',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '10px',
+                  }}
+                >
+                  <div className="row">
+                    <div className="col-4">
+                      <h6 className="fw-bold">Categorias</h6>
+                      <ul className="list-unstyled">
+                        <li><Link className="dropdown-item" to="/categoria/labiales">Labiales</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/sombras">Sombras</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/bases">Bases</Link></li>
+                      </ul>
+                    </div>
+                    <div className="col-4">
+                      <ul className="list-unstyled mt-4">
+                        <li><Link className="dropdown-item" to="/categoria/cremas">Cremas</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/serums">Serums</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/limpiadores">Limpiadores</Link></li>
+                      </ul>
+                    </div>
+                    <div className="col-4">
+                      <ul className="list-unstyled mt-4">
+                        <li><Link className="dropdown-item" to="/categoria/perfumes-mujer">Para Mujer</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/perfumes-hombre">Para Hombre</Link></li>
+                        <li><Link className="dropdown-item" to="/categoria/perfumes-unisex">Unisex</Link></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Enlace a todos los productos */}
-            <Link className="nav-link text-white fw-bold" to="/productos">Todos los productos</Link>
-
-            {/* Enlace de contacto */}
-            <a className="nav-link text-white fw-bold" href="#" onClick={() => setSidebarVisible(true)}>Contacto</a>
-
-            {/* Ícono de carrito de compras */}
-            <Link
-              to={totalItems > 0 ? "/carrito" : "#"}
-              className="nav-link text-white fw-bold position-relative"
-              style={{ fontSize: '1.5rem', marginLeft: '350px' }}
-              onClick={(e) => {
-                if (totalItems === 0) {
-                  e.preventDefault(); // Evitar la navegación si el carrito está vacío
-                  showEmptyCartMessage(); // Mostrar mensaje con PrimeReact Toast
-                }
-              }}
-            >
-              <FaShoppingCart size={40} />
-              {totalItems > 0 && (
-                <span
-                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                  style={{ fontSize: '0.8rem' }}
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link fw-bold" style={{ color: '#fff' }} to="/productos">
+                  Todos los productos
+                </Link>
+              </li>
+              <li className="nav-item">
+                <button
+                  className="nav-link fw-bold btn btn-link"
+                  style={{ color: '#fff', textDecoration: 'none' }}
+                  onClick={() => setSidebarVisible(true)}
                 >
-                  {totalItems}
-                </span>
-              )}
-            </Link>
+                  Contacto
+                </button>
+              </li>
+            </ul>
+
+            {/* Carrito y botones de usuario */}
+            <div className="d-flex align-items-center" style={{ gap: '16px' }}>
+              {/* Carrito */}
+              <Link
+                to={totalItems > 0 ? "/carrito" : "#"}
+                className="nav-link fw-bold position-relative"
+                style={{ color: '#fff', fontSize: '1.7rem', marginRight: '8px' }}
+                onClick={(e) => {
+                  if (totalItems === 0) {
+                    e.preventDefault();
+                    showEmptyCartMessage();
+                  }
+                }}
+              >
+                <FaShoppingCart />
+                {totalItems > 0 && (
+                  <span
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    style={{ fontSize: '0.8rem' }}
+                  >
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
+
+              {/* Iniciar sesión */}
+              <Link
+                to="/login"
+                className="btn fw-bold"
+                style={{
+                  border: '2px solid #fff',
+                  borderRadius: '25px',
+                  color: '#fff',
+                  background: 'transparent',
+                  padding: '6px 22px',
+                  fontSize: '1rem',
+                  transition: 'background 0.2s, color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#fff';
+                  e.target.style.color = '#d72660';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = '#fff';
+                }}
+              >
+                Iniciar sesión
+              </Link>
+
+              {/* Registrar */}
+              <Link
+                to="/registro"
+                className="btn fw-bold"
+                style={{
+                  border: '2px solid #fff',
+                  borderRadius: '25px',
+                  color: '#d72660',
+                  background: '#fff',
+                  padding: '6px 22px',
+                  fontSize: '1rem',
+                  marginLeft: '2px',
+                  transition: 'background 0.2s, color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#d72660';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#fff';
+                  e.target.style.color = '#d72660';
+                }}
+              >
+                Registrar
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
-
-      {/* Sidebar */}
       <SidebarComponent visible={sidebarVisible} onHide={() => setSidebarVisible(false)} />
     </>
   );

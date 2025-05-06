@@ -1,39 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useCart } from './CartContext'; // Correcto si está en la misma carpeta
-import { FaTrash } from 'react-icons/fa'; // Importar el ícono de basura
-import { supabase } from '../config/supabase'
+import React, { useState } from 'react';
+import { useCart } from './CartContext';
+import { FaTrash, FaMinus, FaPlus } from 'react-icons/fa';
 
 const Card = ({ nombre, precio, imagen }) => {
   const [cantidad, setCantidad] = useState(1);
-  const [mostrarControles, setMostrarControles] = useState(false); // Estado para mostrar los botones de cantidad
-  const { cart, dispatch } = useCart(); // Obtener el estado y el dispatch del carrito
-  const [productos, setProductos] = useState([]);
-
-  useEffect(() => {
-    async function getProductos() {
-      const { data: productos, error } = await supabase.from('product').select();
-
-      if (error) {
-        console.error('Error al obtener productos:', error.message);
-        return;
-      }
-
-      console.log('Productos obtenidos:', productos);
-
-      if (productos && productos.length > 0) {
-        setProductos(productos);
-      }
-    }
-
-    getProductos();
-  }, []);
+  const [mostrarControles, setMostrarControles] = useState(false);
+  const { dispatch } = useCart();
 
   const handleAgregarAlCarrito = () => {
     dispatch({
       type: 'ADD_TO_CART',
       payload: { nombre, precio, imagen, cantidad },
     });
-    setMostrarControles(true); // Mostrar los botones de cantidad
+    setMostrarControles(true);
   };
 
   const handleIncrementarCantidad = () => {
@@ -56,51 +35,91 @@ const Card = ({ nombre, precio, imagen }) => {
 
   const handleVaciarCarrito = () => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: { nombre } });
-    setMostrarControles(false); // Ocultar los botones de cantidad
+    setMostrarControles(false);
+    setCantidad(1);
   };
 
   return (
-    <div className="card" style={{ width: '18rem', border: '2px solid #e0e0e0', borderRadius: '10px', overflow: 'hidden' }}>
-      <img src={imagen} className="card-img-top" alt={nombre} style={{ height: '15rem', objectFit: 'cover' }} />
+    <div
+      className="card shadow-sm"
+      style={{
+        width: '18rem',
+        border: '2px solid #eebee9',
+        borderRadius: '18px',
+        overflow: 'hidden',
+        background: '#fff',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        boxShadow: '0 8px 24px 0 rgba(215,38,96,0.07)',
+      }}
+    >
+      <img
+        src={imagen}
+        className="card-img-top"
+        alt={nombre}
+        style={{
+          height: '14rem',
+          objectFit: 'cover',
+          borderTopLeftRadius: '18px',
+          borderTopRightRadius: '18px',
+        }}
+      />
       <div className="card-body text-center">
-        <h5 className="card-title">{nombre}</h5>
-        <p className="card-text">${precio}</p>
+        <h5
+          className="card-title"
+          style={{ color: '#d72660', fontWeight: 'bold', fontSize: '1.25rem' }}
+        >
+          {nombre}
+        </h5>
+        <p
+          className="card-text"
+          style={{ color: '#8d3d6c', fontWeight: 'bold', fontSize: '1.1rem' }}
+        >
+          ${precio}
+        </p>
 
-        {/* Mostrar botones de cantidad solo si se agregó al carrito */}
         {mostrarControles ? (
-          <div className="d-flex flex-column align-items-center mb-3">
-            <div className="d-flex align-items-center">
+          <div
+            className="d-flex flex-column align-items-center mb-3 position-relative group-controles"
+            style={{ minHeight: 80 }}
+          >
+            <div className="d-flex align-items-center justify-content-center gap-3">
               {/* Botón de Decremento */}
-              {cantidad > 1 && (
-                <button
-                  className="btn"
-                  onClick={handleDecrementarCantidad}
-                  style={{
-                    borderRadius: '50%',
-                    width: '40px',
-                    height: '40px',
-                    backgroundColor: '#f8f9fa', // Fondo claro
-                    border: '1px solid #ced4da', // Borde gris claro
-                    color: '#343a40', // Texto oscuro
-                    fontSize: '1.2rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.3s ease', // Animación suave
-                  }}
-                >
-                  -
-                </button>
-              )}
+              <button
+                className="btn btn-cantidad"
+                onClick={handleDecrementarCantidad}
+                disabled={cantidad === 1}
+                style={{
+                  borderRadius: '50%',
+                  width: '44px',
+                  height: '44px',
+                  backgroundColor: cantidad === 1 ? '#f8f9fa' : '#fff0fa',
+                  border: '2px solid #eebee9',
+                  color: '#d72660',
+                  fontSize: '1.3rem',
+                  fontWeight: 'bold',
+                  boxShadow: '0 2px 8px rgba(215,38,96,0.09)',
+                  transition: 'background 0.2s, color 0.2s, box-shadow 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: cantidad === 1 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                <FaMinus />
+              </button>
 
               {/* Cantidad */}
               <span
                 className="mx-3"
                 style={{
-                  fontSize: '1.5rem',
+                  fontSize: '2rem',
                   fontWeight: 'bold',
-                  color: '#343a40', // Color del texto
+                  color: '#d72660',
+                  minWidth: '38px',
+                  textAlign: 'center',
+                  margin: '0 10px',
+                  letterSpacing: '1px',
+                  userSelect: 'none',
                 }}
               >
                 {cantidad}
@@ -108,15 +127,19 @@ const Card = ({ nombre, precio, imagen }) => {
 
               {/* Botón de Incremento */}
               <button
-                className="btn"
+                className="btn btn-cantidad"
                 onClick={handleIncrementarCantidad}
                 style={{
                   borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  backgroundColor: '#f1bcd2', // Rosa oscuro
-                  color: '#fff', // Texto blanco
-                  fontSize: '1.2rem',
+                  width: '44px',
+                  height: '44px',
+                  backgroundColor: '#eebee9',
+                  color: '#d72660',
+                  fontSize: '1.3rem',
+                  fontWeight: 'bold',
+                  border: '2px solid #eebee9',
+                  boxShadow: '0 2px 8px rgba(215,38,96,0.09)',
+                  transition: 'background 0.2s, color 0.2s, box-shadow 0.2s',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -125,34 +148,57 @@ const Card = ({ nombre, precio, imagen }) => {
                   transition: 'background-color 0.3s ease', // Animación suave
                 }}
               >
-                +
+                <FaPlus />
               </button>
             </div>
 
             {/* Ícono de basura para eliminar el producto */}
-            {cantidad === 1 && (
-              <div
-                className="d-flex justify-content-center align-items-center mt-3"
-                style={{
-                  cursor: 'pointer',
-                }}
-                onClick={handleVaciarCarrito}
-              >
-                <FaTrash
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#FFFFFF', // Color rosa oscuro
-                  }}
-                />
-              </div>
-            )}
+            <button
+              className="btn btn-eliminar-producto"
+              onClick={handleVaciarCarrito}
+              style={{
+                top: '-10px',
+                right: '-10px',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                backgroundColor: '#d72660',
+                color: '#fff',
+                border: 'none',
+                boxShadow: '0 2px 8px rgba(215,38,96,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.1rem',
+                cursor: 'pointer',
+                opacity: 0.9,
+                transition: 'background-color 0.3s ease, opacity 0.3s ease',
+                zIndex: 10,
+              }}
+              title="Quitar del carrito"
+              onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '0.9')}
+            >
+              <FaTrash />
+            </button>
           </div>
         ) : (
           // Botón para agregar al carrito
           <button
-            className="btn btn-primary w-100"
+            className="btn w-100"
             onClick={handleAgregarAlCarrito}
-            style={{ fontSize: '1rem', fontWeight: 'bold' }}
+            style={{
+              background: 'linear-gradient(90deg, #d72660 70%, #eebee9 100%)',
+              color: '#fff',
+              fontWeight: 'bold',
+              borderRadius: '22px',
+              fontSize: '1rem',
+              padding: '10px 0',
+              border: 'none',
+              boxShadow: '0 2px 8px rgba(215,38,96,0.07)',
+              transition: 'background 0.2s',
+              cursor: 'pointer',
+            }}
           >
             Agregar al carrito
           </button>

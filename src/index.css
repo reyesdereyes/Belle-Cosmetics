@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, #ff9a9e, #f1bcd2, #fbc2eb, #f0dea3, #ff9a9e);
+  background: linear-gradient(135deg, #ff9a9e, #eea0ff, #fbc2eb, #d9a3f0, #ee9aff);
   background-size: 600% 600%;
   animation: gradient-animation 15s ease infinite;
   color: #fff;
@@ -22,67 +22,37 @@ body {
   }
 }
 
-  /* Estilo de la tarjeta */
-.card {
-  width: 18rem;
-  border: 2px solid #e0e0e0;
-  background-color: #ffe6f0;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.045);
+  box-shadow: 0 14px 32px rgba(215,38,96,0.18);
 }
 
 /* Imagen */
 .card img {
   width: 100%;
-  height: 15rem;
+  height: 14rem;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  transition: transform 0.3s cubic-bezier(.4,2,.3,1);
 }
 
 .card img:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* Cuerpo de la tarjeta */
-.card-body {
-  padding: 1rem;
-  min-height: 10rem;
-}
+
 
 /* Título */
 .card-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
+  color: #d72660;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Botón */
-.card .btn {
-  background-color: #ff00bf;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card .btn:hover {
-  background-color: #d62bb1;
-  transform: scale(1.05);
 }
 
 
