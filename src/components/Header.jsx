@@ -1,15 +1,64 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { SidebarComponent } from './Sidebar';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from './CartContext';
 import { Toast } from 'primereact/toast';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { supabase } from '../config/supabase'; // Ajusta la ruta según tu proyecto
+
+const MySwal = withReactContent(Swal);
+
+// Hook para obtener el usuario autenticado de Supabase O de localStorage (login manual)
+function useAuth() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      // 1. Intenta con Supabase Auth
+      const { data } = await supabase.auth.getSession();
+      if (data?.session?.user) {
+        setUser(data.session.user);
+        return;
+      }
+      // 2. Si no hay sesión de Supabase, busca en localStorage (login manual)
+      const localUser = localStorage.getItem('usuario');
+      if (localUser) {
+        setUser(JSON.parse(localUser));
+      } else {
+        setUser(null);
+      }
+    };
+    getSession();
+
+    // Listener de Supabase Auth (opcional)
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        // Si la sesión de Supabase termina, revisa localStorage
+        const localUser = localStorage.getItem('usuario');
+        setUser(localUser ? JSON.parse(localUser) : null);
+      }
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  return user;
+}
+
 
 const Header = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const { cart } = useCart();
   const totalItems = cart.items.reduce((total, item) => total + item.cantidad, 0);
   const toast = useRef(null);
+  const navigate = useNavigate();
+  const user = useAuth(); // Detectar usuario logueado
 
   const showEmptyCartMessage = () => {
     toast.current.show({
@@ -20,13 +69,64 @@ const Header = () => {
     });
   };
 
+  // ALERTA cuando no está logueado y quiere ver todos los productos
+  const handleTodosProductosClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      MySwal.fire({
+        icon: 'info',
+        title: '¡Atención!',
+        html: `
+          <p>Debes iniciar sesión primero para ver todos nuestros productos.</p>
+          <p>¿No tienes cuenta? <a href="/registro" style="color:#d72660;font-weight:bold;">Regístrate aquí</a></p>
+        `,
+        confirmButtonColor: '#d72660',
+        confirmButtonText: 'Iniciar sesión',
+        showCancelButton: true,
+        cancelButtonText: 'Cerrar',
+        cancelButtonColor: '#aaa',
+        customClass: {
+          popup: 'swal2-border-radius'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/usuario/iniciar-sesion');
+        }
+      });
+    }
+  };
+
+  // Cerrar sesión
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error al cerrar sesión:', error.message);
+      MySwal.fire({
+        icon: 'error',
+        title: 'Error al cerrar sesión',
+        text: 'Hubo un problema al cerrar sesión. Inténtalo de nuevo.',
+        confirmButtonColor: '#d72660',
+      });
+    } else {
+      MySwal.fire({
+        icon: 'success',
+        title: 'Sesión cerrada',
+        text: 'Has cerrado sesión correctamente.',
+        confirmButtonColor: '#d72660',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate('/'); // Redirigir al inicio
+    }
+  };
+
   return (
     <>
       <Toast ref={toast} />
       <nav
         className="navbar navbar-expand-lg"
         style={{
-          background: 'tranparet', // Fondo rosado pastel
+          background: 'transparent',
           padding: '10px 30px',
           minHeight: '80px',
         }}
@@ -111,7 +211,12 @@ const Header = () => {
                 </div>
               </li>
               <li className="nav-item">
-                <Link className="nav-link fw-bold" style={{ color: '#fff' }} to="/productos">
+                <Link
+                  className="nav-link fw-bold"
+                  style={{ color: '#fff' }}
+                  to={user ? "/productos" : "#"}
+                  onClick={handleTodosProductosClick}
+                >
                   Todos los productos
                 </Link>
               </li>
@@ -151,56 +256,74 @@ const Header = () => {
                 )}
               </Link>
 
-              {/* Iniciar sesión */}
-              <Link
-                to="/login"
-                className="btn fw-bold"
-                style={{
-                  border: '2px solid #fff',
-                  borderRadius: '25px',
-                  color: '#fff',
-                  background: 'transparent',
-                  padding: '6px 22px',
-                  fontSize: '1rem',
-                  transition: 'background 0.2s, color 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#fff';
-                  e.target.style.color = '#d72660';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'transparent';
-                  e.target.style.color = '#fff';
-                }}
-              >
-                Iniciar sesión
-              </Link>
-
-              {/* Registrar */}
-              <Link
-                to="/registro"
-                className="btn fw-bold"
-                style={{
-                  border: '2px solid #fff',
-                  borderRadius: '25px',
-                  color: '#d72660',
-                  background: '#fff',
-                  padding: '6px 22px',
-                  fontSize: '1rem',
-                  marginLeft: '2px',
-                  transition: 'background 0.2s, color 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#d72660';
-                  e.target.style.color = '#fff';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = '#fff';
-                  e.target.style.color = '#d72660';
-                }}
-              >
-                Registrar
-              </Link>
+              {/* Mostrar botones según el estado del usuario */}
+              {user ? (
+                <button
+                  className="btn fw-bold"
+                  style={{
+                    border: '2px solid #fff',
+                    borderRadius: '25px',
+                    color: '#fff',
+                    background: 'transparent',
+                    padding: '6px 22px',
+                    fontSize: '1rem',
+                    transition: 'background 0.2s, color 0.2s',
+                  }}
+                  onClick={handleLogout}
+                >
+                  Cerrar sesión
+                </button>
+              ) : (
+                <>
+                  <Link
+                    to="/usuario/iniciar-sesion"
+                    className="btn fw-bold"
+                    style={{
+                      border: '2px solid #fff',
+                      borderRadius: '25px',
+                      color: '#fff',
+                      background: 'transparent',
+                      padding: '6px 22px',
+                      fontSize: '1rem',
+                      transition: 'background 0.2s, color 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#fff';
+                      e.target.style.color = '#d72660';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'transparent';
+                      e.target.style.color = '#fff';
+                    }}
+                  >
+                    Iniciar sesión
+                  </Link>
+                  <Link
+                    to="/registro"
+                    className="btn fw-bold"
+                    style={{
+                      border: '2px solid #fff',
+                      borderRadius: '25px',
+                      color: '#d72660',
+                      background: '#fff',
+                      padding: '6px 22px',
+                      fontSize: '1rem',
+                      marginLeft: '2px',
+                      transition: 'background 0.2s, color 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#d72660';
+                      e.target.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = '#fff';
+                      e.target.style.color = '#d72660';
+                    }}
+                  >
+                    Registrar
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
