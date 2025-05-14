@@ -6,23 +6,44 @@ import { useCart } from './CartContext';
 import { Toast } from 'primereact/toast';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { supabase } from '../config/supabase'; // Ajusta la ruta según tu proyecto
+import { supabase } from '../config/supabase';
+import UserProfile from './UserProfile';
 
 const MySwal = withReactContent(Swal);
 
-// Hook para obtener el usuario autenticado de Supabase O de localStorage (login manual)
+// Hook de autenticación que consulta también la tabla profiles
 function useAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useAuth();
+
 
   useEffect(() => {
-    const getSession = async () => {
-      // 1. Intenta con Supabase Auth
+    const getSessionAndProfile = async () => {
       const { data } = await supabase.auth.getSession();
       if (data?.session?.user) {
-        setUser(data.session.user);
+        const sessionUser = data.session.user;
+        // Consulta la tabla profiles para obtener datos personalizados
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('username, avatar_url')
+          .eq('id', sessionUser.id)
+          .single();
+
+        if (error) {
+          setUser({
+            ...sessionUser,
+            displayName: sessionUser.email.split('@')[0],
+            profileImage: './default-avatar.png',
+          });
+        } else {
+          setUser({
+            ...sessionUser,
+            displayName: profile.username || sessionUser.email.split('@')[0],
+            profileImage: profile.avatar_url || './default-avatar.png',
+          });
+        }
         return;
       }
-      // 2. Si no hay sesión de Supabase, busca en localStorage (login manual)
+      // Si no hay sesión, busca en localStorage (opcional)
       const localUser = localStorage.getItem('usuario');
       if (localUser) {
         setUser(JSON.parse(localUser));
@@ -30,14 +51,12 @@ function useAuth() {
         setUser(null);
       }
     };
-    getSession();
+    getSessionAndProfile();
 
-    // Listener de Supabase Auth (opcional)
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        setUser(session.user);
+        getSessionAndProfile();
       } else {
-        // Si la sesión de Supabase termina, revisa localStorage
         const localUser = localStorage.getItem('usuario');
         setUser(localUser ? JSON.parse(localUser) : null);
       }
@@ -51,14 +70,13 @@ function useAuth() {
   return user;
 }
 
-
 const Header = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const { cart } = useCart();
   const totalItems = cart.items.reduce((total, item) => total + item.cantidad, 0);
   const toast = useRef(null);
   const navigate = useNavigate();
-  const user = useAuth(); // Detectar usuario logueado
+  const user = useAuth();
 
   const showEmptyCartMessage = () => {
     toast.current.show({
@@ -69,7 +87,91 @@ const Header = () => {
     });
   };
 
-  // ALERTA cuando no está logueado y quiere ver todos los productos
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      MySwal.fire({
+        icon: 'error',
+        title: 'Error al cerrar sesión',
+        text: 'Hubo un problema al cerrar sesión. Inténtalo de nuevo.',
+        confirmButtonColor: '#d72660',
+      });
+    } else {
+      localStorage.removeItem('usuario');
+      MySwal.fire({
+        icon: 'success',
+        title: 'Sesión cerrada',
+        text: 'Has cerrado sesión correctamente.',
+        confirmButtonColor: '#d72660',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate('/');
+    }
+  };
+
+  const handleViewProfile = () => {
+    navigate('/perfil');
+  };
+
+  // Sube la imagen a Supabase Storage, actualiza la tabla profiles y el estado
+  const handleImageUpload = async (file, previewUrl) => {
+    if (!user || !user.id || !file) {
+      MySwal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo subir la imagen. Usuario no autenticado o datos incompletos.',
+      });
+      return;
+    }
+  
+    try {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `avatars/${user.id}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+  
+      if (uploadError) {
+        MySwal.fire({ icon: 'error', title: 'Error al subir imagen', text: uploadError.message });
+        return;
+      }
+  
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
+  
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+  
+      if (updateError) {
+        MySwal.fire({ icon: 'error', title: 'Error al actualizar perfil', text: updateError.message });
+        return;
+      }
+  
+      // Vuelve a consultar el perfil y actualiza el estado del usuario
+      const { data: profile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('username, avatar_url')
+        .eq('id', user.id)
+        .single();
+  
+      if (!fetchError && profile) {
+        setUser({
+          ...user,
+          displayName: profile.username || user.email.split('@')[0],
+          profileImage: profile.avatar_url || './default-avatar.png',
+        });
+      }
+  
+      MySwal.fire({ icon: 'success', title: 'Foto actualizada', timer: 1200, showConfirmButton: false });
+  
+    } catch (err) {
+      MySwal.fire({ icon: 'error', title: 'Error inesperado', text: err.message });
+    }
+  };
+  
+
   const handleTodosProductosClick = (e) => {
     if (!user) {
       e.preventDefault();
@@ -96,52 +198,15 @@ const Header = () => {
     }
   };
 
-  // Cerrar sesión
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error al cerrar sesión:', error.message);
-      MySwal.fire({
-        icon: 'error',
-        title: 'Error al cerrar sesión',
-        text: 'Hubo un problema al cerrar sesión. Inténtalo de nuevo.',
-        confirmButtonColor: '#d72660',
-      });
-    } else {
-      MySwal.fire({
-        icon: 'success',
-        title: 'Sesión cerrada',
-        text: 'Has cerrado sesión correctamente.',
-        confirmButtonColor: '#d72660',
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      navigate('/'); // Redirigir al inicio
-    }
-  };
-
   return (
     <>
       <Toast ref={toast} />
-      <nav
-        className="navbar navbar-expand-lg"
-        style={{
-          background: 'transparent',
-          padding: '10px 30px',
-          minHeight: '80px',
-        }}
-      >
+      <nav className="navbar navbar-expand-lg" style={{ background: 'transparent', padding: '10px 30px', minHeight: '80px' }}>
         <div className="container-fluid">
           {/* Logo y nombre */}
           <Link to="/" className="navbar-brand d-flex align-items-center" style={{ gap: '10px' }}>
-            <img
-              src="./Logo_2.png"
-              alt="Belle Cosmetics"
-              style={{ height: '60px', objectFit: 'contain' }}
-            />
-            <span className="fw-bold" style={{ fontSize: '1.5rem', color: '#fff' }}>
-              Belle Cosmetics
-            </span>
+            <img src="./Logo_2.png" alt="Belle Cosmetics" style={{ height: '60px', objectFit: 'contain' }} />
+            <span className="fw-bold" style={{ fontSize: '1.5rem', color: '#fff' }}>Belle Cosmetics</span>
           </Link>
 
           {/* Botón hamburguesa para mobile */}
@@ -167,10 +232,7 @@ const Header = () => {
                   id="dropdownMenuButton"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
-                  style={{
-                    color: '#fff',
-                    textDecoration: 'none',
-                  }}
+                  style={{ color: '#fff', textDecoration: 'none' }}
                 >
                   Categorías
                 </button>
@@ -247,32 +309,21 @@ const Header = () => {
               >
                 <FaShoppingCart />
                 {totalItems > 0 && (
-                  <span
-                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                    style={{ fontSize: '0.8rem' }}
-                  >
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    style={{ fontSize: '0.8rem' }}>
                     {totalItems}
                   </span>
                 )}
               </Link>
 
-              {/* Mostrar botones según el estado del usuario */}
+              {/* Menú de usuario */}
               {user ? (
-                <button
-                  className="btn fw-bold"
-                  style={{
-                    border: '2px solid #fff',
-                    borderRadius: '25px',
-                    color: '#fff',
-                    background: 'transparent',
-                    padding: '6px 22px',
-                    fontSize: '1rem',
-                    transition: 'background 0.2s, color 0.2s',
-                  }}
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </button>
+                <UserProfile
+                  user={user}
+                  onLogout={handleLogout}
+                  onViewProfile={handleViewProfile}
+                  onImageUpload={handleImageUpload}
+                />
               ) : (
                 <>
                   <Link

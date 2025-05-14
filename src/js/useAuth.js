@@ -1,18 +1,34 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../config/supabase';
-
 export function useAuth() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const getSession = async () => {
-      // 1. Intenta con Supabase Auth
+    const getSessionAndProfile = async () => {
       const { data } = await supabase.auth.getSession();
+
       if (data?.session?.user) {
-        setUser(data.session.user);
+        const sessionUser = data.session.user;
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('username, avatar_url')
+          .eq('id', sessionUser.id)
+          .single();
+
+        if (error) {
+          setUser({
+            ...sessionUser,
+            displayName: sessionUser.email.split('@')[0],
+            profileImage: './default-avatar.png',
+          });
+        } else {
+          setUser({
+            ...sessionUser,
+            displayName: profile.username || sessionUser.email.split('@')[0],
+            profileImage: profile.avatar_url || './default-avatar.png',
+          });
+        }
         return;
       }
-      // 2. Si no hay sesión de Supabase, busca en localStorage (login manual)
+      // Si no hay sesión, busca en localStorage (opcional)
       const localUser = localStorage.getItem('usuario');
       if (localUser) {
         setUser(JSON.parse(localUser));
@@ -20,14 +36,12 @@ export function useAuth() {
         setUser(null);
       }
     };
-    getSession();
+    getSessionAndProfile();
 
-    // Listener de Supabase Auth (opcional)
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        setUser(session.user);
+        getSessionAndProfile();
       } else {
-        // Si la sesión de Supabase termina, revisa localStorage
         const localUser = localStorage.getItem('usuario');
         setUser(localUser ? JSON.parse(localUser) : null);
       }
@@ -38,5 +52,5 @@ export function useAuth() {
     };
   }, []);
 
-  return user;
+  return [user, setUser];
 }
